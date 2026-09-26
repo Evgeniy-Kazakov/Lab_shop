@@ -29,9 +29,9 @@ public:
         if (newVal < 0) throw std::invalid_argument("Quantity must be greater than zero");
         value_ = newVal;
     }
-    void change(int quantity) {
-        if (value_ + quantity < 0) throw std::invalid_argument("Not enough quantity"); {}
-        value_ += quantity;
+    void change(int delta) {
+        if (value_ + delta < 0) throw std::invalid_argument("Not enough quantity"); {}
+        value_ += delta;
     }
 };
 
