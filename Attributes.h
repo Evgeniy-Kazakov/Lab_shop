@@ -16,6 +16,7 @@ public:
         if (newVal < 0) throw std::invalid_argument("Price must be greater than zero");
         value_= newVal;
     }
+    bool operator==(const Price& other) const = default;
 };
 
 class Quantity {
