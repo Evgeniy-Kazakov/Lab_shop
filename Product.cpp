@@ -3,6 +3,7 @@
 //
 
 #include "Product.h"
+#include "Warehouse.h"
 
 int Product::nextId = 1;
 Product::Product(std::string name, Price price, Quantity quantity, Weight weight, std::string category):
@@ -16,8 +17,16 @@ void Product::setPrice(const Price& newPrice) {
     price_ = newPrice;
 }
 
-void Product::transferTo(Warehouse& other) { // надо дописать
-
+bool Product::transferTo(Warehouse& other) {
+    if (!owner_ || owner_ == &other) {
+        return false;
+    }
+    if (other.addProduct(clone())) {
+        Warehouse* oldowner = owner_;
+        oldowner->removeById(id);
+        return true;
+    }
+    return false;
 }
 
 std::unique_ptr<Product> Smartphone::clone() const {

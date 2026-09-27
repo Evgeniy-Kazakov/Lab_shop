@@ -18,6 +18,7 @@ protected:
     Weight weight_;
     std::string category;
     static int nextId;
+    Warehouse* owner_= nullptr;
 public:
     Product(std::string name, Price price, Quantity quantity, Weight weight, std::string category);
     virtual ~Product() = default;
@@ -30,9 +31,12 @@ public:
     Weight getWeight() const {return weight_;}
     std::string getCategory() const {return category;}
 
+    void setWarehouse(Warehouse* warehouse){owner_= warehouse;}
+    Warehouse* getWarehouse() const {return owner_;}
+
     void setPrice(const Price& newPrice);
     void changeQuantity(int delta);
-    void transferTo(Warehouse& other);
+    bool transferTo(Warehouse& other);
 };
 
 class Electronics : public Product {
