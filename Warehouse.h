@@ -8,6 +8,7 @@
 #include <memory>
 #include <cstddef>
 #include "Product.h"
+#include "WarehouseIterator.h"
 
 class Warehouse {
     std::size_t maxSize_;
@@ -31,4 +32,17 @@ public:
 
     std::size_t getMaxSize() const {return maxSize_;}
     std::size_t getCurrentSize() const {return products_.size();}
+
+    WarehouseIterator begin() {
+        return WarehouseIterator(products_.begin(), products_.end());
+    }
+    WarehouseIterator end() {
+        return WarehouseIterator(products_.end(), products_.end());
+    }
+    WarehouseConstIterator begin() const {
+        return WarehouseConstIterator(products_.cbegin(), products_.cend());
+    }
+    WarehouseConstIterator end() const {
+        return WarehouseConstIterator(products_.cend(), products_.cend());
+    }
 };
