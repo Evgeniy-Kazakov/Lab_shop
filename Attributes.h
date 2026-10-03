@@ -9,11 +9,11 @@ class Price {
     int value_;
 public:
     explicit Price(int val): value_(val) {
-        if (val < 0) throw std::invalid_argument("Price must be greater than zero");
+        if (val <= 0) throw std::invalid_argument("Price must be greater than zero");
     }
     int getValue() const  {return value_ ;}
     void setValue(int newVal) {
-        if (newVal < 0) throw std::invalid_argument("Price must be greater than zero");
+        if (newVal <= 0) throw std::invalid_argument("Price must be greater than zero");
         value_= newVal;
     }
     bool operator==(const Price& other) const = default;
@@ -23,11 +23,11 @@ class Quantity {
     int value_;
 public:
     explicit Quantity(int val): value_(val) {
-        if (val < 0) throw std::invalid_argument("Quantity must be greater than zero");
+        if (val <= 0) throw std::invalid_argument("Quantity must be greater than zero");
     }
     int getValue() const  {return value_;}
     void setValue(int newVal) {
-        if (newVal < 0) throw std::invalid_argument("Quantity must be greater than zero");
+        if (newVal <= 0) throw std::invalid_argument("Quantity must be greater than zero");
         value_ = newVal;
     }
     void change(int delta) {
@@ -40,11 +40,11 @@ class Weight {
     double value_;
 public:
     explicit Weight(double val): value_(val) {
-        if (val < 0) throw std::invalid_argument("Weight must be greater than zero");
+        if (val <= 0) throw std::invalid_argument("Weight must be greater than zero");
     }
     double getValue() const  {return value_;}
     void setValue(double newVal) {
-        if (newVal < 0) throw std::invalid_argument("Weight must be greater than zero");
+        if (newVal <= 0) throw std::invalid_argument("Weight must be greater than zero");
         value_ = newVal;
     }
 };

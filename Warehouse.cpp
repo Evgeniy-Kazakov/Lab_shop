@@ -5,8 +5,11 @@
 #include "Warehouse.h"
 #include <algorithm>
 #include <utility>
+#include <stdexcept>
 
-Warehouse::Warehouse(std::size_t maxSize): maxSize_(maxSize) {}
+Warehouse::Warehouse(std::size_t maxSize): maxSize_(maxSize) {
+    if (maxSize == 0 || maxSize > 1000000) throw std::invalid_argument("maxSize must be between 1 and 1000000");
+}
 
 Warehouse::Warehouse (const Warehouse& other): maxSize_(other.maxSize_) {
     products_.reserve(other.products_.size());
@@ -14,7 +17,7 @@ Warehouse::Warehouse (const Warehouse& other): maxSize_(other.maxSize_) {
         if (prod) {
             auto copy = prod->clone();
             copy->setWarehouse(this);
-            products_.push_back(prod->clone());
+            products_.push_back(std::move(copy));
         }
     }
 }
@@ -30,10 +33,9 @@ Warehouse& Warehouse::operator= (const Warehouse& other) {
         if (prod) {
             auto copy = prod->clone();
             copy->setWarehouse(this);
-            products_.push_back(prod->clone());
+            products_.push_back(std::move(copy));
         }
     }
-
     return *this;
 }
 
