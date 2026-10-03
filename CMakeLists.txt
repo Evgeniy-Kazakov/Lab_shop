@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 add_executable(Lab_shop main.cpp
-        Attributes.cpp
         Attributes.h
         Product.cpp
         Product.h
