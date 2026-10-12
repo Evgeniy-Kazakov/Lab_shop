@@ -1,7 +1,3 @@
-//
-// Created by Пользователь on 26.09.2026.
-//
-
 #include "Warehouse.h"
 #include <algorithm>
 #include <utility>
@@ -64,7 +60,7 @@ Warehouse& Warehouse::operator= (Warehouse&& other) noexcept {
 }
 
 bool Warehouse::addProduct(std::unique_ptr<Product> product) {
-    if (!product || products_.size() >= maxSize_) {
+    if (!product || !canAdd(product->getId())) {
         return false;
     }
     product->setWarehouse(this);
@@ -84,7 +80,31 @@ bool Warehouse::removeById(int id) {
     return false;
 }
 
-bool Warehouse::removeByIndex(size_t index) {
+bool Warehouse::canAdd(int id) const {
+    if (products_.size() >= maxSize_) {
+        return false;
+    }
+    return std::none_of(products_.begin(), products_.end(),
+        [id](const std::unique_ptr<Product>& product) {
+           return product && product->getId() == id;
+        });
+}
+
+std::unique_ptr<Product> Warehouse::extractById(int id) {
+    auto it = std::find_if(products_.begin(), products_.end(),
+        [id](const std::unique_ptr<Product>& product) {
+            return product && product->getId() == id;
+        });
+    if (it == products_.end()) {
+        return nullptr;
+    }
+    std::unique_ptr<Product> product = std::move(*it);
+    products_.erase(it);
+    product->setWarehouse(nullptr);
+    return product;
+}
+
+bool Warehouse::removeByIndex(std::size_t index) {
     if (index >= products_.size()) {
         return false;
     }

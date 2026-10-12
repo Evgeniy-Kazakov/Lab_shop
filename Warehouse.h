@@ -1,7 +1,3 @@
-//
-// Created by Пользователь on 26.09.2026.
-//
-
 #pragma once
 #include <vector>
 #include <string>
@@ -9,6 +5,7 @@
 #include <cstddef>
 #include "Product.h"
 #include "WarehouseIterator.h"
+#include "Attributes.h"
 
 class Warehouse {
     std::size_t maxSize_;
@@ -24,7 +21,9 @@ public:
 
     bool addProduct(std::unique_ptr<Product> product);
     bool removeById(int id);
-    bool removeByIndex(size_t index);
+    bool canAdd(int id) const;
+    std::unique_ptr<Product> extractById(int id);
+    bool removeByIndex(std::size_t index);
 
     Product* findById(int id);
     std::vector<Product*> findByCategory(const std::string& category);

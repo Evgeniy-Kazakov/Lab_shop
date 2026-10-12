@@ -1,13 +1,11 @@
-//
-// Created by Пользователь on 25.09.2026.
-//
-
 #include "Product.h"
+#include <memory>
+#include <utility>
 #include "Warehouse.h"
 
-int Product::nextId = 1;
+int Product::nextId_ = 1;
 Product::Product(std::string name, Price price, Quantity quantity, Weight weight, std::string category):
-    id(nextId++), name(std::move(name)), price_(price), quantity_(quantity), weight_(weight), category(std::move(category)) {}
+    id_(nextId_++), name_(std::move(name)), price_(price), quantity_(quantity), weight_(weight), category_(std::move(category)) {}
 
 void Product::changeQuantity(int delta) {
     quantity_.change(delta);
@@ -18,15 +16,10 @@ void Product::setPrice(const Price& newPrice) {
 }
 
 bool Product::transferTo(Warehouse& other) {
-    if (!owner_ || owner_ == &other) {
+    if (!owner_ || owner_ == &other || !other.canAdd(id_)) {
         return false;
     }
-    if (other.addProduct(clone())) {
-        Warehouse* oldowner = owner_;
-        oldowner->removeById(id);
-        return true;
-    }
-    return false;
+    return other.addProduct(owner_->extractById(id_));
 }
 
 std::unique_ptr<Product> Smartphone::clone() const {

@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <iostream>
-#include <memory>
 #include <windows.h>
+#include <utility>
+#include <exception>
 #include "Warehouse.h"
+#include "Product.h"
 #include "ProductFactory.h"
 
 int main() {
@@ -12,81 +14,108 @@ int main() {
     try {
         //Сценарий 1
         std::cout << "Сценарий 1" << std::endl;
-        Warehouse warehousefirst(10);
+        Warehouse warehouseFirst(10);
         SmartphoneFactory phoneFactory;
         LaptopFactory laptopFactory;
-        TShirtFactory tshirtFactory;
+        TShirtFactory tShirtFactory;
 
-        warehousefirst.addProduct(phoneFactory.createProduct("Iphone 17", 50000, 10, 0.2));
-        warehousefirst.addProduct(laptopFactory.createProduct("MacBook", 100000, 8, 1.5));
-        warehousefirst.addProduct(tshirtFactory.createProduct("Calvin Klein", 5000, 40, 0.4));
+        if (!warehouseFirst.addProduct(phoneFactory.createProduct("Iphone 17", 50000, 10, 0.2))) {
+            std::cout << "Не удалось добавить товар Iphone 17" << std::endl;
+        }
+        else {
+            std::cout << "Товар 'Iphone 17' успешно добавлен." << std::endl;
+        }
+        if (!warehouseFirst.addProduct(laptopFactory.createProduct("MacBook", 100000, 8, 1.5))) {
+            std::cout << "Не удалось добавить товар MacBook" << std::endl;
+        }
+        else {
+            std::cout << "Товар 'MacBook' успешно добавлен." << std::endl;
+        }
+        if (!warehouseFirst.addProduct(tShirtFactory.createProduct("Calvin Klein", 5000, 40, 0.4))) {
+            std::cout << "Не удалось добавить товар Calvin Klein" << std::endl;
+        }
+        else {
+            std::cout << "Товар 'Calvin Klein' успешно добавлен." << std::endl;
+        }
+
         std::cout << "Содержание склада" << std::endl;
-        for (Product* product : warehousefirst) {
+        for (Product* product : warehouseFirst) {
             std::cout << "ID: " << product->getId() << " || ";
             std::cout << "Name: " << product->getName() << " || ";
             std::cout << "Category: " << product->getCategory() << " || ";
             std::cout << "Price: " << product->getPrice().getValue() << " || ";
             std::cout << "Quantity: " << product->getQuantity().getValue() << " || ";
-            std::cout << "Weight: " << product->getWeight().getValue() << std::endl << std::endl;
+            std::cout << "Weight: " << product->getWeight().getValue() << std::endl;
         }
 
         //Сценарий 2
-        std::cout << "Сценарий 2" << std::endl;
-        Warehouse warehousesecond = warehousefirst;
-        if (warehousesecond.begin() != warehousesecond.end()) {
-            Product* firstInCopy = *warehousesecond.begin();
+        std::cout << std::endl << "Сценарий 2" << std::endl;
+        Warehouse warehouseSecond = warehouseFirst;
+        if (warehouseSecond.begin() != warehouseSecond.end()) {
+            Product* firstInCopy = *warehouseSecond.begin();
             firstInCopy->setPrice(Price(60000));
         }
-        std::cout << "Цена первого товара в warehousefirst: " << (*warehousefirst.begin())->getPrice().getValue() << std::endl;
-        std::cout << "Цена первого товара в warehousesecond: " << (*warehousesecond.begin())->getPrice().getValue() << std::endl << std::endl;
+        std::cout << "Цена первого товара в warehouseFirst: " << (*warehouseFirst.begin())->getPrice().getValue() << std::endl;
+        std::cout << "Цена первого товара в warehouseSecond: " << (*warehouseSecond.begin())->getPrice().getValue() << std::endl << std::endl;
 
         //Сценарий 3
         std::cout << "Сценарий 3" << std::endl;
-        Warehouse warehousethird = std::move(warehousesecond);
-        std::cout << "Элементов в warehousethird: " << warehousethird.getCurrentSize() << std::endl;
-        std::cout << "Элементов в warehousesecond: " << warehousesecond.getCurrentSize() << std::endl << std::endl;
+        Warehouse warehouseThird = std::move(warehouseSecond);
+        std::cout << "Элементов в warehouseThird после перемещения: " << warehouseThird.getCurrentSize() << std::endl;
+        std::cout << "Элементов в warehouseSecond после перемещения: " << warehouseSecond.getCurrentSize() << std::endl << std::endl;
 
         //Сценарий 4
         std::cout << "Сценарий 4" << std::endl;
-        int searchId = (*warehousefirst.begin())->getId();
-        Product* findId = warehousefirst.findById(searchId);
-        if (findId != nullptr) {
-            std::cout << "Найден товар с id (" << searchId << "): "<< findId->getName() << std::endl;
+        int searchId = (*warehouseFirst.begin())->getId();
+        Product* foundId = warehouseFirst.findById(searchId);
+        if (foundId != nullptr) {
+            std::cout << "Найден товар с id (" << searchId << "): "<< foundId->getName() << std::endl;
         }
-        auto electronic = warehousefirst.findByCategory("electronics");
-        std::cout << "Найдено товаров категории electronic: " << electronic.size() << std::endl;
-        auto cost = warehousefirst.findByPrice(Price(100000));
-        std::cout << "Найдено товаров с ценой 100000: " << cost.size() << std::endl;
-        warehousefirst.removeById(searchId);
-        std::cout << "Удален товар с id:" << searchId << std::endl;
-        warehousefirst.removeByIndex(1);
-        std::cout << "Удален товар с индексом 0" << std::endl;
+        else {
+            std::cout << "Товар с id (" << searchId << ") не найден!" << std::endl;
+        }
 
-        std::cout << "Оставшиеся товары в warehousefirst: " << std:: endl;
-        for (const Product* product : warehousefirst) {
+        auto electronics = warehouseFirst.findByCategory("electronics");
+        std::cout << "Найдено товаров категории electronicss: " << electronics.size() << std::endl;
+
+        auto productsPrice = warehouseFirst.findByPrice(Price(100000));
+        std::cout << "Найдено товаров с ценой 100000: " << productsPrice.size() << std::endl;
+
+        warehouseFirst.removeById(searchId);
+        std::cout << "Удален товар с id:" << searchId << std::endl;
+        warehouseFirst.removeByIndex(1);
+        std::cout << "Удален товар с индексом 1" << std::endl;
+
+        std::cout << "Оставшиеся товары в warehouseFirst: " << std::endl;
+        for (const Product* product : warehouseFirst) {
             std::cout << "ID: " << product->getId() << " || ";
             std::cout << "Name: " << product->getName() << std::endl << std::endl;
         }
 
         //Сценарий 5
         std::cout << "Сценарий 5" << std::endl;
-        Warehouse warehousefourth(10);
-
-        auto it = std::find_if(warehousethird.begin(), warehousethird.end(), [](Product* product) {
+        Warehouse warehouseFourth(10);
+        auto it = std::find_if(warehouseThird.begin(), warehouseThird.end(), [](Product* product) {
            return product->getName() == "MacBook";
         });
-        if (it != warehousethird.end()) {
+        if (it != warehouseThird.end()) {
             Product* laptop = *it;
-            bool transferred = laptop->transferTo(warehousefourth);
-            if (transferred) {
-                std::cout << "Товар перенесен на warehousefourth" << std::endl;
-                Product* transferLaptop = *warehousefourth.begin();
+            bool isTransferred = laptop->transferTo(warehouseFourth);
+            if (isTransferred) {
+                std::cout << "Товар перенесен на warehouseFourth" << std::endl;
+                Product* transferLaptop = *warehouseFourth.begin();
                 transferLaptop->setPrice(Price(90000));
                 transferLaptop->changeQuantity(-2);
-                std::cout << "Обновленный товар на warehousefourth: " << transferLaptop->getName() << " || ";
+                std::cout << "Обновленный товар на warehouseFourth: " << transferLaptop->getName() << " || ";
                 std::cout << "Новая цена: " << transferLaptop->getPrice().getValue() << " || ";
                 std::cout << "Остаток: " << transferLaptop->getQuantity().getValue() << std::endl;
             }
+            else {
+                std::cout << "Не удалось перенести товар" << std::endl;
+            }
+        }
+        else {
+            std::cout << "Товар 'MacBook' не найден в warehouseThird" << std::endl;
         }
     }
     catch (std::exception& e) {

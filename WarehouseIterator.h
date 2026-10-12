@@ -1,7 +1,3 @@
-//
-// Created by Пользователь on 29.09.2026.
-//
-
 #pragma once
 #include <vector>
 #include <memory>
@@ -12,7 +8,7 @@ class WarehouseIterator {
   std::vector<std::unique_ptr<Product>>::iterator end_;
 public:
   WarehouseIterator(std::vector<std::unique_ptr<Product>>::iterator start,
-    std::vector<std::unique_ptr<Product>>::iterator finish): current_(start), end_(finish) {};
+    std::vector<std::unique_ptr<Product>>::iterator finish): current_(start), end_(finish) {}
 
   Product* operator*() const {
     return current_->get();
@@ -45,7 +41,7 @@ class WarehouseConstIterator {
   std::vector<std::unique_ptr<Product>>::const_iterator end_;
 public:
   WarehouseConstIterator(std::vector<std::unique_ptr<Product>>::const_iterator start,
-    std::vector<std::unique_ptr<Product>>::const_iterator finish): current_(start), end_(finish) {};
+    std::vector<std::unique_ptr<Product>>::const_iterator finish): current_(start), end_(finish) {}
 
   const Product* operator*() const {
     return current_->get();

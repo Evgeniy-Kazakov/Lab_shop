@@ -1,7 +1,3 @@
-//
-// Created by Пользователь on 25.09.2026.
-//
-
 #pragma once
 #include <memory>
 #include <string>
@@ -10,28 +6,27 @@
 
 class Warehouse;
 class Product {
-protected:
-    int id;
-    std::string name;
+    int id_;
+    std::string name_;
     Price price_;
     Quantity quantity_;
     Weight weight_;
-    std::string category;
-    static int nextId;
-    Warehouse* owner_= nullptr;
+    std::string category_;
+    static int nextId_;
+    Warehouse* owner_ = nullptr;
 public:
     Product(std::string name, Price price, Quantity quantity, Weight weight, std::string category);
     virtual ~Product() = default;
     virtual std::unique_ptr<Product> clone() const = 0;
 
-    int getId() const {return id;}
-    std::string getName() const {return name;}
-    Price getPrice() const {return price_;}
-    Quantity getQuantity() const {return quantity_;}
-    Weight getWeight() const {return weight_;}
-    std::string getCategory() const {return category;}
+    int getId() const {return id_;}
+    const std::string& getName() const {return name_;}
+    const Price& getPrice() const {return price_;}
+    const Quantity& getQuantity() const {return quantity_;}
+    const Weight& getWeight() const {return weight_;}
+    const std::string& getCategory() const {return category_;}
 
-    void setWarehouse(Warehouse* warehouse){owner_= warehouse;}
+    void setWarehouse(Warehouse* warehouse) {owner_ = warehouse;}
     Warehouse* getWarehouse() const {return owner_;}
 
     void setPrice(const Price& newPrice);
