@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include "Attributes.h"
+#include "ProductType.h"
 
 class Warehouse;
 class Product {
@@ -11,7 +12,7 @@ class Product {
     Price price_;
     Quantity quantity_;
     Weight weight_;
-    std::string category_;
+    std::shared_ptr<ProductType> type_;
     static int nextId_;
     Warehouse* owner_ = nullptr;
 public:
@@ -24,13 +25,15 @@ public:
     const Price& getPrice() const {return price_;}
     const Quantity& getQuantity() const {return quantity_;}
     const Weight& getWeight() const {return weight_;}
-    const std::string& getCategory() const {return category_;}
+    const std::string& getCategory() const {return type_->getCategory();}
+    std::shared_ptr<ProductType> getType() const {return type_;}
 
     void setWarehouse(Warehouse* warehouse) {owner_ = warehouse;}
     Warehouse* getWarehouse() const {return owner_;}
 
     void setPrice(const Price& newPrice);
     void changeQuantity(int delta);
+    void setQuantity(int newQuantity);
     bool transferTo(Warehouse& other);
 };
 

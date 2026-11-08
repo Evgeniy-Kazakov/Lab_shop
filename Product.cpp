@@ -5,10 +5,14 @@
 
 int Product::nextId_ = 1;
 Product::Product(std::string name, Price price, Quantity quantity, Weight weight, std::string category):
-    id_(nextId_++), name_(std::move(name)), price_(price), quantity_(quantity), weight_(weight), category_(std::move(category)) {}
+    id_(nextId_++), name_(std::move(name)), price_(price), quantity_(quantity), weight_(weight), type_(ProductType::getType(category)) {}
 
 void Product::changeQuantity(int delta) {
     quantity_.change(delta);
+}
+
+void Product::setQuantity(int newQuantity) {
+    quantity_.setValue(newQuantity);
 }
 
 void Product::setPrice(const Price& newPrice) {

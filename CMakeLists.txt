@@ -11,4 +11,20 @@ add_executable(Lab_shop main.cpp
         Warehouse.cpp
         Warehouse.h
         ProductFactory.h
-        WarehouseIterator.h)
+        WarehouseIterator.h
+        ProductType.cpp
+        ProductType.h
+        Order.cpp
+        Order.h
+        OrderStatus.h
+        Delivery.cpp
+        Delivery.h
+        Discount.cpp
+        Discount.h
+        DeliveyProxy.cpp
+        DeliveyProxy.h
+        OrderEvent.h
+        OrderManager.cpp
+        OrderManager.h
+        Operators.cpp
+        Operators.h)
