@@ -3,6 +3,13 @@
 #include <string>
 #include <stdexcept>
 #include <utility>
+#include <sstream>
+
+static std::string formatPercent(double percent) {
+    std::ostringstream stream;
+    stream << percent;
+    return stream.str();
+}
 
 PercentDiscount::PercentDiscount(double percent):percent_(percent) {
     if (percent <= 0 || percent > 100) {
@@ -14,7 +21,7 @@ void PercentDiscount::apply(Order& order) const {
     order.addDiscountSum(amount);
 }
 std::string PercentDiscount::getName() const {
-    return "Скидка " + std::to_string(percent_) + "%";
+    return "Скидка " + formatPercent(percent_) + "%";
 }
 
 CashbackDiscount::CashbackDiscount(double percent): percent_(percent) {
@@ -27,7 +34,7 @@ void CashbackDiscount::apply(Order& order) const {
     order.addCashback(amount);
 }
 std::string CashbackDiscount::getName() const {
-    return "Cashback " + std::to_string(percent_) + "%";
+    return "Cashback " + formatPercent(percent_) + "%";
 }
 
 void FreeDeliveryDiscount::apply(Order& order) const {

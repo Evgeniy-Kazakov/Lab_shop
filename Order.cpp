@@ -2,6 +2,7 @@
 #include <utility>
 #include <stdexcept>
 #include <algorithm>
+#include <ctime>
 
 int Order::nextId_ = 1;
 Order::Order(const std::string& customer)
@@ -61,6 +62,9 @@ void Order::addItem(std::shared_ptr<Product> item) {
     if (!item) {
         throw std::invalid_argument("Item mustn't be null");
     }
+    if (item->getQuantity().getValue() <= 0) {
+        throw std::invalid_argument("Item quantity must be greater than zero");
+    }
     for (auto& existing : items_) {
         if (existing->getId() == item->getId()) {
             existing->changeQuantity(item->getQuantity().getValue());
@@ -112,7 +116,7 @@ double Order::getTotalPrice() const {
     return total;
 }
 
-bool canChangeStatus(OrderStatus oldStatus, OrderStatus newStatus) {
+static bool canChangeStatus(OrderStatus oldStatus, OrderStatus newStatus) {
     if (oldStatus == OrderStatus::Pending) {
         return newStatus == OrderStatus::Paid || newStatus == OrderStatus::Cancelled;
     }

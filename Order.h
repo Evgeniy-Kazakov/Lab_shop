@@ -43,10 +43,10 @@ public:
     double getDeliverycost() const;
     double getTotalPrice() const;
 
-    void addDiscountSum(double amount) {discountSum_ += amount;}
-    void addCashback(double amount) {cashback_ += amount;}
-    void setFreeDelivery(bool value) {freeDelivery_ = value;}
-    void addGift(const std::string& giftName) {gifts_.push_back(giftName);}
+    void addDiscountSum(double amount) {checkTable(); discountSum_ += amount;}
+    void addCashback(double amount) {checkTable(); cashback_ += amount;}
+    void setFreeDelivery(bool value) {checkTable(); freeDelivery_ = value;}
+    void addGift(const std::string& giftName) {checkTable(); gifts_.push_back(giftName);}
 
     int getId() const {return id_;}
     const std::string& getCustomer() const {return customer_;}
