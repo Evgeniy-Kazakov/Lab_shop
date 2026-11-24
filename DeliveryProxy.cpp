@@ -1,4 +1,4 @@
-#include "DeliveyProxy.h"
+#include "DeliveryProxy.h"
 #include <stdexcept>
 #include <utility>
 #include "Order.h"

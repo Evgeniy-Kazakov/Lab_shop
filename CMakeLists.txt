@@ -21,10 +21,40 @@ add_executable(Lab_shop main.cpp
         Delivery.h
         Discount.cpp
         Discount.h
-        DeliveyProxy.cpp
-        DeliveyProxy.h
+        DeliveryProxy.cpp
+        DeliveryProxy.h
         OrderEvent.h
         OrderManager.cpp
         OrderManager.h
         Operators.cpp
-        Operators.h)
+        Operators.h
+        StringUtils.cpp
+        StringUtils.h
+        ShopProductFactory.cpp
+        ShopProductFactory.h
+        WarehouseManager.cpp
+        WarehouseManager.h
+        PaymentSystem.cpp
+        PaymentSystem.h
+        DeliveryService.cpp
+        DeliveryService.h
+        ShopMediator.cpp
+        ShopMediator.h
+        Command.h
+        CommandHistory.h
+        ShopFacade.cpp
+        ShopFacade.h
+        ProductCommands.cpp
+        ProductCommands.h
+        OrderCommands.cpp
+        OrderCommands.h
+        ShowCommands.cpp
+        ShowCommands.h
+        Handler.cpp
+        Handler.h
+        ProductHandlers.cpp
+        ProductHandlers.h
+        OrderHandlers.cpp
+        OrderHandlers.h
+        ShowHandlers.cpp
+        ShowHandlers.h)

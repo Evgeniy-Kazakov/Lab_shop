@@ -1,5 +1,6 @@
 #include "OrderManager.h"
 #include <stdexcept>
+#include "StringUtils.h"
 
 OrderManager::OrderManager(int maxOrders): turnover_(0), maxOrders_(maxOrders), activeOrders_(0) {
     if (maxOrders_ <= 0) {
@@ -71,6 +72,29 @@ bool OrderManager::hasPaidOrders(const std::string& customer) const {
         }
     }
     return false;
+}
+
+std::string OrderManager::getActiveOrdersText() const {
+    std::string text;
+    for (const auto& order : orders_) {
+        OrderStatus status = order->getStatus();
+        if (status == OrderStatus::Delivered || status == OrderStatus::Cancelled) {
+            continue;
+        }
+        if (!text.empty()) {
+            text += "\n";
+        }
+        text += "Заказ №" + std::to_string(order->getId()) + " | клиент: " + order->getCustomer()
+             + " | статус: " + orderStatusToString(status)
+             + " | сумма: " + formatMoney(order->getTotalPrice());
+        if (order->getDelivery()) {
+            text += " | доставка: " + order->getDelivery()->getName();
+        }
+    }
+    if (text.empty()) {
+        return "Активных заказов нет";
+    }
+    return text;
 }
 
 void OrderManager::onOrderEvent(const OrderEvent& event) {

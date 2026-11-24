@@ -25,7 +25,6 @@ std::shared_ptr<ProductType> ProductType::getType(const std::string& category) {
         price = 300;
     }
 
-
     auto newType = std::shared_ptr<ProductType>(new ProductType(category, weight, price));
     pool_[category] = newType;
     return newType;

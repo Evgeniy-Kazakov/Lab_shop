@@ -28,6 +28,9 @@ public:
     double getTurnover() const {return turnover_;}
     int getCustomersCount() const {return static_cast<int>(customers_.size());}
     int getActiveOrders() const {return activeOrders_;}
+    int getMaxOrders() const {return maxOrders_;}
+    const std::vector<std::shared_ptr<Order>>& getOrders() const {return orders_;}
+    std::string getActiveOrdersText() const;
 
     void onOrderEvent(const OrderEvent& event) override;
 };
